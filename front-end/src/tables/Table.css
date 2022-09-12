@@ -1,0 +1,9 @@
+.table {
+    border: 1px black solid;
+    display: flex;
+    flex-flow: row wrap;
+}
+
+.table-item {
+    width: 200px;
+}

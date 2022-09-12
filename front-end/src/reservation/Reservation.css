@@ -1,0 +1,52 @@
+.reservation {
+    border: 1px black solid;
+    display: flex;
+    margin-bottom: 3px;
+}
+
+.reservation:hover {
+    background-color: #393a44;
+    color: white;
+}
+
+.reservation-item {
+    width: 20%;
+}
+
+.reservation-item span{
+    font-weight: 500;
+}
+
+.reservation-item .status {
+    width: 30%;
+    height: 100%;
+}
+.seated {
+    background-color: lightyellow;
+}
+
+.booked {
+    background-color: lightblue;
+}
+
+.finished {
+    background-color: lightgreen;
+}
+
+.cancelled {
+    background-color: lightcoral;
+}
+
+.reservation-buttons{
+    width: 40%;
+    flex-flow: row wrap;
+    display: flex;
+}
+.reservation-button-item {
+    width: 60px;
+    margin-right: 10px;
+}
+
+.reservation-button-item button{
+    width: 60px;
+}

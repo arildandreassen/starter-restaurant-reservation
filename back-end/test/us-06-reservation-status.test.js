@@ -271,9 +271,7 @@ describe("US-06 - Reservation status", () => {
       expect(finishResponse.status).toBe(200);
 
       const reservationsResponse = await request(app)
-        .get(
-          `/reservations?date=${asDateString(reservationOne.reservation_date)}`
-        )
+        .get(`/reservations?date=${reservationOne.reservation_date}`)
         .set("Accept", "application/json");
 
       expect(reservationsResponse.body.error).toBeUndefined();

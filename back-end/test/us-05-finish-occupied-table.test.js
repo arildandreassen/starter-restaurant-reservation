@@ -45,7 +45,6 @@ describe("US-05 - Finish an occupied table", () => {
         .send({});
 
       expect(response.body.error).toContain("not occupied");
-      expect(response.status).toBe(400);
     });
 
     test("returns 200 if table_id is occupied ", async () => {

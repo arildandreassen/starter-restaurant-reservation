@@ -1,5 +1,5 @@
 const puppeteer = require("puppeteer");
-const { setDefaultOptions } = require('expect-puppeteer');
+const { setDefaultOptions } = require("expect-puppeteer");
 const fs = require("fs");
 const fsPromises = fs.promises;
 
@@ -61,7 +61,6 @@ describe("US-05 - Finish an occupied table - E2E", () => {
         path: ".screenshots/us-05-dashboard-finish-button-before.png",
         fullPage: true,
       });
-
       const containsOccupied = await containsText(
         page,
         `[data-table-id-status="${table.table_id}"]`,
@@ -84,6 +83,10 @@ describe("US-05 - Finish an occupied table - E2E", () => {
 
       await page.waitForResponse((response) => {
         return response.url().endsWith(`/tables`);
+      });
+
+      await page.goto(`${baseURL}/dashboard`, {
+        waitUntil: "networkidle0",
       });
 
       await page.screenshot({

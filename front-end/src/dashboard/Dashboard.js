@@ -1,6 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { listReservations } from "../utils/api";
+import {
+  listReservations,
+  finishTable,
+  listTables,
+  updateReservationStatus,
+} from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
+import { useLocation } from "react-router-dom";
+import Reservations from "../reservation/Reservations";
+import Tables from "../tables/Tables";
 
 /**
  * Defines the dashboard page.
@@ -11,26 +19,63 @@ import ErrorAlert from "../layout/ErrorAlert";
 function Dashboard({ date }) {
   const [reservations, setReservations] = useState([]);
   const [reservationsError, setReservationsError] = useState(null);
+  const [tables, setTables] = useState([]);
+  const location = useLocation();
+  const [displayDate, setDisplayDate] = useState("");
 
-  useEffect(loadDashboard, [date]);
+  useEffect(loadDashboard, [date, location]);
 
   function loadDashboard() {
+    const query = new URLSearchParams(location.search);
+    const queryDate = query.get("date") || date;
+    setDisplayDate(queryDate);
     const abortController = new AbortController();
+
     setReservationsError(null);
-    listReservations({ date }, abortController.signal)
+    listReservations({ date: queryDate }, abortController.signal)
       .then(setReservations)
       .catch(setReservationsError);
+    listTables(abortController.signal).then(setTables);
     return () => abortController.abort();
   }
+
+  const handleFinish = (event) => {
+    const abortController = new AbortController();
+    const table_id = event.target.attributes.table_id.value;
+    if (window.confirm("Is this table ready to seat new guests?")) {
+      finishTable(table_id, abortController.signal).then(loadDashboard);
+    }
+    return () => abortController.abort();
+  };
+
+  const handleCancel = async (event) => {
+    const abortController = new AbortController();
+    const reservation_id = event.target.attributes.reservation_id.value;
+    if (
+      window.confirm(
+        "Do you want to cancel this reservation? This cannot be undone"
+      )
+    ) {
+      updateReservationStatus(
+        reservation_id,
+        "cancelled",
+        abortController.signal
+      )
+        .then(loadDashboard)
+        .catch(setReservationsError);
+    }
+    return () => abortController.abort();
+  };
 
   return (
     <main>
       <h1>Dashboard</h1>
       <div className="d-md-flex mb-3">
-        <h4 className="mb-0">Reservations for date</h4>
+        <h4 className="mb-0">{`Reservations for date ${displayDate}`}</h4>
       </div>
       <ErrorAlert error={reservationsError} />
-      {JSON.stringify(reservations)}
+      <Reservations reservations={reservations} handleCancel={handleCancel} />
+      <Tables tables={tables} handleFinish={handleFinish} />
     </main>
   );
 }
