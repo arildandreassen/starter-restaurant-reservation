@@ -226,7 +226,7 @@ function isClosed(day) {
 
 module.exports = {
   list: asyncErrorBoundary(list),
-  get: [verifyGet, get],
+  get: [verifyGet, asyncErrorBoundary(get)],
   post: [verifyCreate, asyncErrorBoundary(create)],
   update: [verifyGet, verifyCreate, asyncErrorBoundary(update)],
   updateStatus: [

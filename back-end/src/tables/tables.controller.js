@@ -160,7 +160,11 @@ module.exports = {
     verifyTableExist,
     verifySeatBody,
     verifyTableIsAvailable,
-    seatTable,
+    asyncErrorBoundary(seatTable),
   ],
-  finishTable: [verifyTableExist, verifyTableIsOccupied, finishTable],
+  finishTable: [
+    verifyTableExist,
+    verifyTableIsOccupied,
+    asyncErrorBoundary(finishTable),
+  ],
 };

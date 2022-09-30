@@ -6,9 +6,10 @@ import {
   updateReservationStatus,
 } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
-import { useLocation } from "react-router-dom";
+import { useLocation, useHistory } from "react-router-dom";
 import Reservations from "../reservation/Reservations";
 import Tables from "../tables/Tables";
+import dayjs from "dayjs";
 
 /**
  * Defines the dashboard page.
@@ -22,6 +23,7 @@ function Dashboard({ date }) {
   const [tables, setTables] = useState([]);
   const location = useLocation();
   const [displayDate, setDisplayDate] = useState("");
+  const history = useHistory();
 
   useEffect(loadDashboard, [date, location]);
 
@@ -67,13 +69,31 @@ function Dashboard({ date }) {
     return () => abortController.abort();
   };
 
+  const handlePrevious = () => {
+    const previous = dayjs(displayDate).subtract(1, "day").format("YYYY-MM-DD");
+    history.push(`?date=${previous}`);
+  };
+
+  const handleToday = () => {
+    history.push("/");
+  };
+
+  const handleNext = () => {
+    const next = dayjs(displayDate).add(1, "day").format("YYYY-MM-DD");
+    history.push(`?date=${next}`);
+  };
+
   return (
     <main>
       <h1>Dashboard</h1>
+      <button onClick={handlePrevious}>Previous</button>
+      <button onClick={handleToday}>Today</button>
+      <button onClick={handleNext}>Next</button>
       <div className="d-md-flex mb-3">
         <h4 className="mb-0">{`Reservations for date ${displayDate}`}</h4>
       </div>
       <ErrorAlert error={reservationsError} />
+
       <Reservations reservations={reservations} handleCancel={handleCancel} />
       <Tables tables={tables} handleFinish={handleFinish} />
     </main>

@@ -39,6 +39,13 @@ function NewReservations() {
     if (name === "people") {
       value = Number(value);
     }
+
+    if (name === "mobile_number") {
+      const char = value[value.length - 1];
+      if (char && isNaN(parseInt(char))) return;
+      if (value.length > 9) return;
+    }
+
     setFormData({
       ...formData,
       [name]: value,
