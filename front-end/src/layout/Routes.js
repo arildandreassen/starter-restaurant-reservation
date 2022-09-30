@@ -7,8 +7,7 @@ import NotFound from "./NotFound";
 import { today } from "../utils/date-time";
 import Tables from "../tables/NewTables";
 import SeatReservation from "../newReservations/SeatReservations";
-import Search from "../search/Search";
-// import Edit from "../edit/Edit";
+import Search from "../search/search";
 
 /**
  * Defines all the routes for the application.
