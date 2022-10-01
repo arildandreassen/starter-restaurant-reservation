@@ -47,8 +47,5 @@
   },
   "keywords": [],
   "author": "Thinkful, Inc.",
-  "license": "UNLICENSED",
-  "dependencies": {
-    "dayjs": "^1.11.5"
-  }
+  "license": "UNLICENSED"
 }
